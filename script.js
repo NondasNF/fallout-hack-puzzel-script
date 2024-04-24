@@ -1,37 +1,30 @@
-let words = ["FERAL", "CARGO", "BEGIN", "AMONG", "VIEWS", "CHEAT", "CELLS", "WARES", "ALERT", "TREES", "CHECKS", "STYLE", "SMALL", "SCOUT"]
+let words = ["FERAL", "CARGO", "BEGIN", "AMONG", "VIEWS", "CHEAT", "CELLS", "WARES", "ALERT", "TREES", "CHECKS", "STYLE", "SMALL", "SCOUT"];
 let firstWord = "FALLS";
 let secondWord = "HACKS";
-let thirdWord = "SCRIPT";
+let thirdWord = "TREES";
 let usedWords = {
   "FALLS": ["FALLS", 1],
   "HACKS": ["HACKS", 1],
-} 
+  "TREES": ["TREES", 5]
+};
 
 function pushUniqueStringToArray(arr, str) {
   if (!arr.includes(str)) {
-      arr.push(str);
+    arr.push(str);
   }
 }
-
-function removeStringFromArray(arr, strToRemove) {
-  const index = arr.indexOf(strToRemove);
-  if (index !== -1) {
-      arr.splice(index, 1);
-  }
-}
-
 
 function loadFirstTry(words, firstWord) {
   let options = [];
 
-  words.map((word) => {
-    let match = [];
+  words.forEach((word) => {
+    let match = 0;
     firstWord.split('').forEach((letter, index) => {
-        if(word[index] === letter){
-          match.push(index);
-        }
+      if (word[index] === letter) {
+        match++;
+      }
     });
-    if(match.length === usedWords[firstWord][1]){
+    if (match === usedWords[firstWord][1]) {
       pushUniqueStringToArray(options, word);
     }
   });
@@ -39,34 +32,29 @@ function loadFirstTry(words, firstWord) {
   return options;
 }
 
-function loadSecondTry(arr, secondWord) {
+function loadNextTry(arr, secondWord) {
+  let newArr = arr;
   arr.forEach((word) => {
-    if(true) {
-      console.log(word)
-    };
-    let missmatch = [];
+    let mismatch = 0;
     secondWord.split('').forEach((letter, index) => {
-        if(word[index] !== letter){
-          missmatch.push(index);
-        }
+      if (word[index] !== letter) {
+        mismatch++;
+      }
     });
-    if (missmatch.length - word.length !== usedWords[secondWord][1]) {
-      removeStringFromArray(options, word);
-  }
-  });
-  return options;
-}
 
+    if (word.length - mismatch !== usedWords[secondWord][1]) {
+      newArr = newArr.filter((item) => item !== word);
+    }
+  });
+  return newArr;
+}
 
 let options = [];
 
-
 options = loadFirstTry(words, firstWord);
-console.log("The opstions are: ", options);
-loadSecondTry(options, secondWord);
-console.log("The opstions are: ", options);
+console.log("The options are: ", options);
+options = loadNextTry(options, secondWord);
+console.log("The options are: ", options);
+options = loadNextTry(options, thirdWord);
 
-
-
-
-
+console.log("The options are: ", options);
