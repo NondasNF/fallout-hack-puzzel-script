@@ -1,11 +1,11 @@
 let words = ["FERAL", "CARGO", "BEGIN", "AMONG", "VIEWS", "CHEAT", "CELLS", "WARES", "ALERT", "TREES", "CHECKS", "STYLE", "SMALL", "SCOUT"];
 let firstWord = "FALLS";
-let secondWord = "HACKS";
-let thirdWord = "TREES";
+let secondWord = "CARGO";
+let thirdWord = "VIEWS";
 let usedWords = {
-  "FALLS": ["FALLS", 1],
-  "HACKS": ["HACKS", 1],
-  "TREES": ["TREES", 5]
+  "FALLS":  1,
+  "CARGO":  0,
+  "VIEWS": 0
 };
 
 function pushUniqueStringToArray(arr, str) {
@@ -24,7 +24,7 @@ function loadFirstTry(words, firstWord) {
         match++;
       }
     });
-    if (match === usedWords[firstWord][1]) {
+    if (match === usedWords[firstWord]) {
       pushUniqueStringToArray(options, word);
     }
   });
@@ -32,29 +32,32 @@ function loadFirstTry(words, firstWord) {
   return options;
 }
 
-function loadNextTry(arr, secondWord) {
+function loadNextTry(arr, nextWord) {
+  if (nextWord === "") {
+    return arr;
+  }
   let newArr = arr;
   arr.forEach((word) => {
     let mismatch = 0;
-    secondWord.split('').forEach((letter, index) => {
+    nextWord.split('').forEach((letter, index) => {
       if (word[index] !== letter) {
         mismatch++;
       }
     });
 
-    if (word.length - mismatch !== usedWords[secondWord][1]) {
+    if (word.length - mismatch !== usedWords[nextWord]) {
       newArr = newArr.filter((item) => item !== word);
     }
   });
+
   return newArr;
 }
 
 let options = [];
 
 options = loadFirstTry(words, firstWord);
-console.log("The options are: ", options);
+console.log("The options after first try are: ", options);
 options = loadNextTry(options, secondWord);
-console.log("The options are: ", options);
+console.log("The options after second try are: ", options);
 options = loadNextTry(options, thirdWord);
-
-console.log("The options are: ", options);
+console.log("The options after third try are: ", options);
